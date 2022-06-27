@@ -1,9 +1,10 @@
 const path = require('path');
 const express = require('express');
 
+const rootProjDir = require('../util/root-dir');
+
 const pathToAddProductHtml = path.join(
-  __dirname,
-  '..',
+  rootProjDir,
   'views',
   'add-product.html'
 );
@@ -16,6 +17,7 @@ const router = express.Router();
 
 router.get('/add-product', (req, res) => {
   console.log('In /add-product middleware');
+  console.log(rootProjDir);
   res.sendFile(pathToAddProductHtml);
 });
 
