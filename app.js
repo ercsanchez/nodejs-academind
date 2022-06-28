@@ -14,6 +14,7 @@ const pathTo404Html = path.join(__dirname, 'views', '404.html');
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false })); // parses body of all requests
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
