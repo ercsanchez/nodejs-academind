@@ -15,6 +15,8 @@ const pathToAddProductHtml = path.join(
 
 const router = express.Router();
 
+const products = [];
+
 router.get('/add-product', (req, res) => {
   console.log('In /add-product middleware');
   console.log(rootProjDir);
@@ -22,8 +24,20 @@ router.get('/add-product', (req, res) => {
 });
 
 router.post('/add-product', (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
+  products.push({ title: req.body.title });
+  console.log('products: ', products);
   res.redirect('/');
 });
 
-module.exports = router;
+// module.exports = router;
+
+exports.routes = router;
+exports.products = products;
+
+// alternative method of exporting
+
+// module.exports = {
+//   routes: router,
+//   products,
+// };
