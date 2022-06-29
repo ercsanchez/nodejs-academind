@@ -14,7 +14,7 @@ const pathTo404Html = path.join(__dirname, 'views', '404.html');
 const app = express();
 
 // set the view engine
-app.set('view engine', 'pug');
+app.set('view engine', 'ejs');
 // set the html templates dir
 app.set('views', 'views');
 
