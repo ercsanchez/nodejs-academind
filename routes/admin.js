@@ -1,47 +1,15 @@
 const path = require('path');
 const express = require('express');
 
-const rootProjDir = require('../util/root-dir');
-
-const pathToAddProductHtml = path.join(
-  rootProjDir,
-  'views',
-  'add-product.html'
-);
-
-// alternative to path.join
-// less confusing but will produce wrong path on windows
-// const pathToShopHtml = path.resolve(__dirname, '../views/add-product.html');
+const { getAddProduct, postAddProduct } = require('../controllers/products');
+// alternative import
+// const productsController = require('../controllers/products');
+// productsController.getAddProduct & productsController.postAddProduct
 
 const router = express.Router();
 
-const products = [];
+router.get('/add-product', getAddProduct);
 
-router.get('/add-product', (req, res) => {
-  console.log('In /add-product middleware');
-  console.log(rootProjDir);
-  // res.sendFile(pathToAddProductHtml);
-  res.render('add-product', {
-    pageTitle: 'Add Product',
-    path: '/admin/add-product',
-  });
-});
+router.post('/add-product', postAddProduct);
 
-router.post('/add-product', (req, res) => {
-  // console.log(req.body);
-  products.push({ title: req.body.title });
-  console.log('products: ', products);
-  res.redirect('/');
-});
-
-// module.exports = router;
-
-exports.routes = router;
-exports.products = products;
-
-// alternative method of exporting
-
-// module.exports = {
-//   routes: router,
-//   products,
-// };
+module.exports = router;
