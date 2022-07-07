@@ -5,7 +5,7 @@ const {
   getProducts,
   getProduct,
   getIndex,
-  getCart,
+  // getCart,
   getOrders,
   getCheckout,
   postToCart,
@@ -18,7 +18,7 @@ router.get('/products', getProducts);
 // always place this last in /products routes or always after more specific routes (e.g. /products/delete)
 router.get('/products/:productId', getProduct);
 
-router.get('/cart', getCart);
+// router.get('/cart', getCart);
 
 router.post('/cart', postToCart);
 
