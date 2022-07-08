@@ -1,9 +1,11 @@
 const Product = require('../models/product');
+const get404 = require('./error');
 
 exports.getAddProduct = (req, res) => {
   res.render('admin/edit-product', {
     pageTitle: 'Add Product',
     path: '/admin/add-product',
+    editing: 'false',
   });
 };
 
@@ -23,10 +25,18 @@ exports.getEditProduct = (req, res) => {
   if (editMode !== 'true') {
     return res.redirect('/');
   }
-  res.render('admin/edit-product', {
-    pageTitle: 'Edit Product',
-    path: '/admin/edit-product',
-    editing: editMode,
+  const prodId = req.params.productId;
+  Product.findById(prodId, (prod) => {
+    // check if there is no product
+    if (!prod) {
+      return get404(req, res);
+    }
+    res.render('admin/edit-product', {
+      pageTitle: 'Edit Product',
+      path: `/admin/edit-product/${prodId}`,
+      editing: editMode,
+      product: prod,
+    });
   });
 };
 
