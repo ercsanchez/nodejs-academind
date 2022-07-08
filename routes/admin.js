@@ -5,6 +5,7 @@ const {
   getAddProduct,
   postAddProduct,
   getAdminProducts,
+  getEditProduct,
 } = require('../controllers/admin');
 
 // alternative import
@@ -18,5 +19,7 @@ router.get('/add-product', getAddProduct);
 router.get('/products', getAdminProducts);
 
 router.post('/add-product', postAddProduct);
+
+router.get('/edit-product/:productId', getEditProduct);
 
 module.exports = router;
