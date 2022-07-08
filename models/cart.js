@@ -15,7 +15,7 @@ module.exports = class Cart {
       }
       // check if product is already existing
       const existingProductIndex = cart.products.findIndex(
-        (prod) => (prod.id = id)
+        (prod) => prod.id === id
       );
       const existingProduct = cart.products[existingProductIndex];
       let updatedProduct;
