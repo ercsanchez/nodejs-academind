@@ -5,4 +5,17 @@
 <body>
 
   <%- include('../partials/navigation.ejs') %>
+
+  <main>
+    <% if (cart.length > 0) { %>
+    <ul>
+      <% cart.forEach(prod =>{ %>
+      <li><%= prod.data.title %> (<%= prod.qty %>)</li>
+      <% }) %>
+    </ul>
+    <% } else { %>
+    <h1>Cart is empty!</h1>
+    <% } %>
+  </main>
+
   <%- include('../partials/end.ejs') %>

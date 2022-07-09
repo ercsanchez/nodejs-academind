@@ -33,15 +33,26 @@ exports.getIndex = (req, res) => {
   });
 };
 
-// exports.getCart = (req, res) => {
-//   Cart.fetchAll((products) => {
-//     res.render('shop/cart', {
-//       cart: products,
-//       pageTitle: 'Your Cart',
-//       path: '/cart',
-//     });
-//   });
-// };
+exports.getCart = (req, res) => {
+  Cart.getCart((cart) => {
+    Product.fetchAll((products) => {
+      const cartProducts = [];
+      for (const product of products) {
+        const cartProductData = cart.products.find(
+          (prod) => prod.id === product.id
+        );
+        if (cartProductData) {
+          cartProducts.push({ data: product, qty: cartProductData.qty });
+        }
+      }
+      res.render('shop/cart', {
+        cart: cartProducts,
+        pageTitle: 'Your Cart',
+        path: '/cart',
+      });
+    });
+  });
+};
 
 exports.postToCart = (req, res) => {
   const prodId = req.body.productId;
