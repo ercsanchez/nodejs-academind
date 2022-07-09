@@ -54,6 +54,16 @@ exports.getCart = (req, res) => {
   });
 };
 
+exports.postCartDeleteProduct = (req, res) => {
+  const prodId = req.body.productId;
+  console.log('1=> ', prodId);
+  Product.findById(prodId, (product) => {
+    Cart.deleteProduct(prodId, product.price);
+    console.log('2=> ', product);
+    res.redirect('/cart');
+  });
+};
+
 exports.postToCart = (req, res) => {
   const prodId = req.body.productId;
   console.log(prodId);
