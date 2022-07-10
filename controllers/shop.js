@@ -9,10 +9,19 @@ exports.getProducts = (req, res) => {
   //     path: '/products',
   //   });
   // });
-  Product.fetchAll()
-    .then(({ rows: products }) => {
+  // Product.fetchAll()
+  //   .then(({ rows: products }) => {
+  //     res.render('shop/product-list', {
+  //       prods: products,
+  //       pageTitle: 'All Products',
+  //       path: '/products',
+  //     });
+  //   })
+  //   .catch((err) => console.error(err));
+  Product.findAll()
+    .then((result) => {
       res.render('shop/product-list', {
-        prods: products,
+        prods: result.map((product) => product.dataValues),
         pageTitle: 'All Products',
         path: '/products',
       });
@@ -35,10 +44,10 @@ exports.getProduct = (req, res) => {
 };
 
 exports.getIndex = (req, res) => {
-  Product.fetchAll()
-    .then(({ rows: products }) => {
+  Product.findAll()
+    .then((result) => {
       res.render('shop/index', {
-        prods: products,
+        prods: result.map((product) => product.dataValues),
         pageTitle: 'Shop',
         path: '/',
       });
