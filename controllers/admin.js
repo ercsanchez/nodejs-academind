@@ -1,5 +1,4 @@
 const Product = require('../models/product');
-const router = require('../routes/admin');
 const get404 = require('./error');
 
 exports.getAddProduct = (req, res) => {
@@ -13,11 +12,22 @@ exports.getAddProduct = (req, res) => {
 exports.postAddProduct = (req, res) => {
   console.log(req.body);
   const { title, imageUrl, price, description } = req.body;
-  const product = new Product(null, title, imageUrl, description, price);
-  product
-    .save()
+  // const product = new Product(null, title, imageUrl, description, price);
+  // product
+  //   .save()
+  //   .then((result) => {
+  //     console.log('successfully added product');
+  //     res.redirect('/');
+  //   })
+  //   .catch((err) => console.error(err));
+  Product.create({
+    title,
+    image_url: imageUrl,
+    price,
+    description,
+  })
     .then((result) => {
-      console.log('successfully added product');
+      // console.log(result);
       res.redirect('/');
     })
     .catch((err) => console.error(err));
