@@ -6,7 +6,7 @@ const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const get404 = require('./controllers/error');
 
-const db = require('./util/database');
+const sequelize = require('./util/database');
 
 // const pathTo404Html = path.join(__dirname, 'views', '404.html');
 
@@ -15,6 +15,13 @@ const db = require('./util/database');
 // const pathToShopHtml = path.resolve(__dirname, '../views/404.html');
 
 const app = express();
+
+// test postgresql connection =================================================
+sequelize
+  .authenticate()
+  .then(() => console.log('Connection has been established successfully.'))
+  .catch((err) => console.error(err));
+// test postgresql connection =================================================
 
 // set the view engine
 app.set('view engine', 'ejs');
