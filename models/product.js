@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const db = require('../util/database');
 
 const Cart = require('./cart');
 
@@ -30,36 +31,42 @@ module.exports = class Product {
   }
 
   save() {
-    getProductsFromFile((products) => {
-      // if product is already existing, it is an update to product's details
-      if (this.id) {
-        const existingProductIndex = products.findIndex(
-          (prod) => prod.id === this.id
-        );
-        const updatedProducts = [...products];
-        updatedProducts[existingProductIndex] = this;
-        fs.writeFile(p, JSON.stringify(updatedProducts), (err) => {
-          console.error(err);
-        });
-      } else {
-        this.id = Math.random().toString();
-        products.push(this);
-        fs.writeFile(p, JSON.stringify(products), (err) => {
-          console.error(err);
-        });
-      }
-    });
+    // getProductsFromFile((products) => {
+    //   // if product is already existing, it is an update to product's details
+    //   if (this.id) {
+    //     const existingProductIndex = products.findIndex(
+    //       (prod) => prod.id === this.id
+    //     );
+    //     const updatedProducts = [...products];
+    //     updatedProducts[existingProductIndex] = this;
+    //     fs.writeFile(p, JSON.stringify(updatedProducts), (err) => {
+    //       console.error(err);
+    //     });
+    //   } else {
+    //     this.id = Math.random().toString();
+    //     products.push(this);
+    //     fs.writeFile(p, JSON.stringify(products), (err) => {
+    //       console.error(err);
+    //     });
+    //   }
+    // });
+    return db.query(
+      'INSERT INTO products(title, price, description, image_url) VALUES($1, $2, $3, $4)',
+      [this.title, this.price, this.description, this.imageUrl]
+    );
   }
 
-  static fetchAll(callback) {
-    getProductsFromFile(callback);
+  static fetchAll() {
+    // getProductsFromFile(callback);
+    return db.query('SELECT * FROM products');
   }
 
-  static findById(id, callback) {
-    getProductsFromFile((products) => {
-      const product = products.find((prod) => prod.id === id);
-      callback(product);
-    });
+  static findById(id) {
+    // getProductsFromFile((products) => {
+    //   const product = products.find((prod) => prod.id === id);
+    //   callback(product);
+    // });
+    return db.query('SELECT * FROM products WHERE id = $1', [id]);
   }
 
   static deleteById(id) {
