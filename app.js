@@ -46,6 +46,11 @@ app.use(shopRoutes);
 // catch-all for unmatched routes
 app.use(get404);
 
-app.listen(3500, () => {
-  console.log('Server listening on port 3500!');
-});
+sequelize
+  .sync({ alter: true })
+  .then((result) => {
+    app.listen(3500, () => {
+      console.log('Server listening on port 3500!');
+    });
+  })
+  .catch((err) => console.error(err));
