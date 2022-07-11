@@ -45,8 +45,13 @@ exports.getEditProduct = (req, res) => {
     return res.redirect('/');
   }
   const prodId = req.params.productId;
-  Product.findByPk(prodId)
-    .then(({ dataValues }) => {
+  // Product.findByPk(prodId)
+
+  // get only products owned by user
+  req.user
+    .getProducts({ where: { id: prodId } })
+    .then(([{ dataValues }]) => {
+      console.log(dataValues);
       if (!dataValues) {
         return get404(req, res);
       }
@@ -74,7 +79,9 @@ exports.postEditProduct = (req, res) => {
 };
 
 exports.getAdminProducts = (req, res) => {
-  Product.findAll()
+  // Product.findAll();
+  req.user
+    .getProducts()
     .then((result) => {
       res.render('admin/products', {
         prods: result.map(({ dataValues }) => dataValues),
