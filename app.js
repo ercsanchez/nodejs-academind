@@ -5,8 +5,10 @@ const bodyParser = require('body-parser'); // already added with express but rem
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const get404 = require('./controllers/error');
-
 const sequelize = require('./util/database');
+const Product = require('./models/product');
+const User = require('./models/user');
+const { userInfo } = require('os');
 
 // const pathTo404Html = path.join(__dirname, 'views', '404.html');
 
@@ -46,9 +48,13 @@ app.use(shopRoutes);
 // catch-all for unmatched routes
 app.use(get404);
 
+Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
+User.hasMany(Product);
+
 sequelize
   .sync({ alter: true })
   .then((result) => {
+    console.log(result);
     app.listen(3500, () => {
       console.log('Server listening on port 3500!');
     });
