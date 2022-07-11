@@ -8,8 +8,8 @@ const get404 = require('./controllers/error');
 const sequelize = require('./util/database');
 const Product = require('./models/product');
 const User = require('./models/user');
-const { userInfo } = require('os');
-const { nextTick } = require('process');
+const Cart = require('./models/cart');
+const CartItem = require('./models/cart-item');
 
 // const pathTo404Html = path.join(__dirname, 'views', '404.html');
 
@@ -67,6 +67,10 @@ app.use(get404);
 
 Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
 User.hasMany(Product);
+User.hasOne(Cart);
+Cart.belongsTo(User);
+Cart.belongsToMany(Product, { through: CartItem });
+Product.belongsToMany(Cart, { through: CartItem });
 
 sequelize
   .sync({ alter: true })
