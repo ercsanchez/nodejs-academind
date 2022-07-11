@@ -89,6 +89,18 @@ sequelize
   })
   .then((user) => {
     // console.log(user.dataValues);
+    user
+      .getCart()
+      .then((cart) => {
+        // create current user's cart if it doesn't exist
+        if (!cart) {
+          return user.createCart();
+        }
+        return Promise.resolve(cart);
+      })
+      .catch((err) => console.error(err));
+  })
+  .then((result) => {
     app.listen(3500, () => {
       console.log('Server listening on port 3500!');
     });

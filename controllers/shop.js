@@ -77,39 +77,49 @@ exports.getIndex = (req, res) => {
 };
 
 exports.getCart = (req, res) => {
-  Cart.getCart((cart) => {
-    Product.fetchAll((products) => {
-      const cartProducts = [];
-      for (const product of products) {
-        const cartProductData = cart.products.find(
-          (prod) => prod.id === product.id
-        );
-        if (cartProductData) {
-          cartProducts.push({ data: product, qty: cartProductData.qty });
-        }
-      }
+  // Cart.getCart((cart) => {
+  //   Product.fetchAll((products) => {
+  //     const cartProducts = [];
+  //     for (const product of products) {
+  //       const cartProductData = cart.products.find(
+  //         (prod) => prod.id === product.id
+  //       );
+  //       if (cartProductData) {
+  //         cartProducts.push({ data: product, qty: cartProductData.qty });
+  //       }
+  //     }
+  //     res.render('shop/cart', {
+  //       cart: cartProducts,
+  //       pageTitle: 'Your Cart',
+  //       path: '/cart',
+  //     });
+  //   });
+  // });
+  req.user
+    .getCart()
+    .then((cart) => {
+      return cart.getProducts();
+    })
+    .then((cartProducts) => {
       res.render('shop/cart', {
         cart: cartProducts,
         pageTitle: 'Your Cart',
         path: '/cart',
       });
-    });
-  });
+    })
+    .catch((err) => console.error(err));
 };
 
 exports.postCartDeleteProduct = (req, res) => {
   const prodId = req.body.productId;
-  console.log('1=> ', prodId);
   Product.findById(prodId, (product) => {
     Cart.deleteProduct(prodId, product.price);
-    console.log('2=> ', product);
     res.redirect('/cart');
   });
 };
 
 exports.postToCart = (req, res) => {
   const prodId = req.body.productId;
-  console.log(prodId);
   Product.findById(prodId, (product) => {
     Cart.addProduct(prodId, product.price);
   });
