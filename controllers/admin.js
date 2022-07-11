@@ -71,13 +71,22 @@ exports.postEditProduct = (req, res) => {
 };
 
 exports.getAdminProducts = (req, res) => {
-  Product.fetchAll((products) => {
-    res.render('admin/products', {
-      prods: products,
-      pageTitle: 'Admin Products',
-      path: '/admin/products',
-    });
-  });
+  // Product.fetchAll((products) => {
+  //   res.render('admin/products', {
+  //     prods: products,
+  //     pageTitle: 'Admin Products',
+  //     path: '/admin/products',
+  //   });
+  // });
+  Product.findAll()
+    .then((result) => {
+      res.render('admin/products', {
+        prods: result.map(({ dataValues }) => dataValues),
+        pageTitle: 'Admin Products',
+        path: '/admin/products',
+      });
+    })
+    .catch((err) => console.error(err));
 };
 
 exports.postDeleteProduct = (req, res) => {
