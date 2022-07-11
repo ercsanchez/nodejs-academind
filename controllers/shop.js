@@ -31,16 +31,37 @@ exports.getProducts = (req, res) => {
 
 exports.getProduct = (req, res) => {
   const prodId = req.params.productId;
-  Product.findById(prodId)
-    .then(({ rows: prod }) => {
-      console.log(prod[0]);
+  // Product.findById(prodId)
+  //   .then(({ rows: prod }) => {
+  //     console.log(prod[0]);
+  //     res.render('shop/product-detail', {
+  //       product: prod[0],
+  //       pageTitle: prod.title,
+  //       path: `/products`,
+  //     });
+  //   })
+  //   .catch((err) => console.error(err));
+
+  Product.findByPk(prodId)
+    .then(({ dataValues: product }) => {
       res.render('shop/product-detail', {
-        product: prod[0],
-        pageTitle: prod.title,
-        path: `/products`,
+        product: product,
+        pageTitle: product.title,
+        path: '/products',
       });
     })
     .catch((err) => console.error(err));
+
+  // alternative:
+  // Product.findAll({ where: { id: prodId } })
+  //   .then(([{ dataValues: product }]) => {
+  //     res.render('shop/product-detail', {
+  //       product: product,
+  //       pageTitle: product.title,
+  //       path: '/products',
+  //     });
+  //   })
+  //   .catch((err) => console.error(err));
 };
 
 exports.getIndex = (req, res) => {
