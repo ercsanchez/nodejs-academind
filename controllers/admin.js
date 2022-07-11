@@ -10,14 +10,26 @@ exports.getAddProduct = (req, res) => {
 };
 
 exports.postAddProduct = (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   const { title, imageUrl, price, description } = req.body;
-  Product.create({
-    title,
-    image_url: imageUrl,
-    price,
-    description,
-  })
+
+  // const { id: currentUserId } = req.user.dataValues;
+  // Product.create({
+  //   title,
+  //   image_url: imageUrl,
+  //   price,
+  //   description,
+  //   userId: currentUserId,
+  // })
+
+  //shortcut to commented out code | sequelize feature for associations
+  req.user
+    .createProduct({
+      title,
+      image_url: imageUrl,
+      price,
+      description,
+    })
     .then((result) => {
       res.redirect('/admin/products');
     })
