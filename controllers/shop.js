@@ -188,10 +188,17 @@ exports.postOrder = (req, res) => {
 };
 
 exports.getOrders = (req, res) => {
-  res.render('shop/orders', {
-    pageTitle: 'Your Orders',
-    path: '/orders',
-  });
+  req.user
+    .getOrders({ include: ['products'] }) // eager load products table so that we can access the order_items join table
+    .then((orders) => {
+      // console.log('look here=> ', orders[0].products[0].order_item);
+      res.render('shop/orders', {
+        pageTitle: 'Your Orders',
+        path: '/orders',
+        orders: orders,
+      });
+    })
+    .catch((err) => console.error(err));
 };
 
 exports.getCheckout = (req, res) => {
