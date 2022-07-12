@@ -4,6 +4,7 @@ const bodyParser = require('body-parser'); // already added with express but rem
 
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
+const authRoutes = require('./routes/auth');
 const get404 = require('./controllers/error');
 const sequelize = require('./util/database');
 const Product = require('./models/product');
@@ -61,6 +62,7 @@ app.use('/pgtest', (req, res) => {
     .catch((err) => console.error(err));
 });
 
+app.use(authRoutes);
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
