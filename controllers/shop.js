@@ -126,6 +126,7 @@ exports.postToCart = (req, res) => {
   // });
   //
   let fetchedCart;
+  let newQty = 1;
   req.user
     .getCart()
     .then((cart) => {
@@ -133,15 +134,15 @@ exports.postToCart = (req, res) => {
       return cart.getProducts({ where: { id: prodId } });
     })
     .then(([product]) => {
-      let newQty = 1;
       if (product) {
-        //
+        const oldQty = product.cart_item.qty;
+        newQty = oldQty + 1;
+        return Promise.resolve(product);
       }
-      return Product.findByPk(prodId)
-        .then((product) => {
-          return fetchedCart.addProduct(product, { through: { qty: newQty } });
-        })
-        .catch((err) => console.error(err));
+      return Product.findByPk(prodId);
+    })
+    .then((product) => {
+      return fetchedCart.addProduct(product, { through: { qty: newQty } });
     })
     .then((cart) => {
       res.redirect('/cart');
