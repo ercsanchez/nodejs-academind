@@ -42,6 +42,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // callback func is only executed for incoming requests or when you finally go through a
 // route (after app is running), so there will be no error even when a User is nonexistent
 // before running app since it will be created before we get to a route
+
 app.use((req, res, next) => {
   User.findByPk(1)
     .then((user) => {
@@ -80,9 +81,18 @@ User.hasMany(Order);
 Order.belongsToMany(Product, { through: OrderItem });
 Product.belongsToMany(Order, { through: OrderItem });
 
+console.log(
+  'EXECUTION CHECK 1================================================> '
+);
+
 sequelize
   .sync({ alter: true })
   .then((result) => {
+    // CODE ISN'T EXECUTED HERE
+    console.log(result);
+    console.log(
+      'EXECUTION CHECK 2================================================> '
+    );
     return User.findByPk(1);
   })
   .then((user) => {
