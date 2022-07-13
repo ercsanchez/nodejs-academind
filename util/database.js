@@ -27,15 +27,15 @@ const { PG_HOST, PG_PORT, PG_USER, PG_PWORD, PG_DB } = process.env;
 // node-postgres package ===========================================
 
 // sequelize package ===========================================
-const { Sequelize } = require('sequelize');
-// const sequelize = new Sequelize(
-//   `postgres://${PG_USER}:${PG_PWORD}@${PG_HOST}:${PG_PORT}/${PG_DB}`
-// );
+const Sequelize = require('sequelize');
+const sequelize = new Sequelize(
+  `postgres://${PG_USER}:${PG_PWORD}@${PG_HOST}:${PG_PORT}/${PG_DB}`
+);
 // or
-const sequelize = new Sequelize(PG_DB, PG_USER, PG_PWORD, {
-  host: PG_HOST,
-  dialect: 'postgres',
-});
+// const sequelize = new Sequelize(PG_DB, PG_USER, PG_PWORD, {
+//   host: PG_HOST,
+//   dialect: 'postgres',
+// });
 
 module.exports = sequelize;
 // sequelize package ===========================================
